@@ -29,8 +29,8 @@ export default async function PhotoPage({ params }: PhotoPageProps) {
   return (
     <div className="relative mx-auto max-w-[1960px] h-full p-4">
       <Carousel
-        index={photo.id}
-        currentPhoto={photo}
+        index={photo.id as any}
+        currentPhoto={photo as any}
         slug={slug}
       />
     </div>

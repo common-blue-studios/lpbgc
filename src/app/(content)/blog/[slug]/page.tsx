@@ -37,7 +37,7 @@ async function fetchPost(slug: string): Promise<Post | null> {
       if (item.nodeType === "paragraph") {
         return (
           acc +
-          item.content.reduce((acc, item) => {
+          item.content.reduce((acc: any, item: any) => {
             return acc + item.value.split(" ").length;
           }, 0)
         );
