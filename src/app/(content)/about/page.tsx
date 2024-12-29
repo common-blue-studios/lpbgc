@@ -8,7 +8,7 @@ export default async function About() {
     return <div>Data unavailable</div>;
   }
   return (
-    <div className="place-items-center place-content-center">
+    <div className="place-items-center place-content-center pb-16 md:pb-2">
       <Image 
         src="/about.png" 
         alt="About" 
@@ -22,7 +22,7 @@ export default async function About() {
           height={300} 
         />
         <div className="max-w-2xl mx-auto ">
-        <Markdown className="prose gap-2">
+        <Markdown className="prose gap-2 ">
             {data.content}
           </Markdown>
       </div>

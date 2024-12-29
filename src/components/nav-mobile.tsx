@@ -16,6 +16,7 @@ export function NavMobile({ setShow, show }: navMobileProps) {
           <li>
             <Link
               href="/"
+              onClick={() => setShow(!show)}
               className="text-gray-700 hover:underline hover:underline-offset-4 hover:font-bold"
             >
               Home
@@ -24,6 +25,7 @@ export function NavMobile({ setShow, show }: navMobileProps) {
           <li>
             <Link
               href="/gallery"
+              onClick={() => setShow(!show)}
               className="text-gray-700 hover:underline hover:underline-offset-4 hover:font-bold"
             >
               Gallery
@@ -32,6 +34,7 @@ export function NavMobile({ setShow, show }: navMobileProps) {
           <li>
             <Link
               href="/about"
+              onClick={() => setShow(!show)}
               className="text-gray-700 hover:underline hover:underline-offset-4 hover:font-bold"
             >
               About
@@ -48,6 +51,7 @@ export function NavMobile({ setShow, show }: navMobileProps) {
           <li>
             <Link
               href="/blog"
+              onClick={() => setShow(!show)}
               className="text-gray-700 hover:underline hover:underline-offset-4 hover:font-bold"
             >
               Blog
