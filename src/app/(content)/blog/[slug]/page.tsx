@@ -72,8 +72,9 @@ export default async function BlogPost({
 }: {
   params: { slug: string };
 }) {
+  const data  = await params;
 
-  const post = await fetchPost(params.slug);
+  const post = await fetchPost(data.slug);
 
   if (!post) {
     return (
