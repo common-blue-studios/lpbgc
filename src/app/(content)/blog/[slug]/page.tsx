@@ -29,7 +29,6 @@ async function fetchPost(slug: string): Promise<Post | null> {
   const post = entries.items[0].fields as any;
 
   const calculateReadingTime = (content: any[] | string) => {
-    if (content.length === 0) return 0;
     const wordsPerMinute = 200;
     if (typeof content === "string") {
       const words = content.split(" ").length;
@@ -67,11 +66,7 @@ async function fetchPost(slug: string): Promise<Post | null> {
   };
 }
 
-export default async function BlogPost({
-  params,
-}: {
-  params: { slug: string };
-}) {
+export default async function BlogPost(params: any) {
   const data  = await params;
 
   const post = await fetchPost(data.slug);

@@ -2,14 +2,7 @@ import { notFound } from "next/navigation";
 import { getArtPieces } from "@/lib/api/gallery";
 import Carousel from "@/components/carousel";
 
-interface PhotoPageProps {
-  params: {
-    slug: string;
-    photoId: string;
-  };
-}
-
-export default async function PhotoPage({ params }: PhotoPageProps) {
+export default async function PhotoPage({ params }: any) {
   const { slug, photoId } = await params;
 
   const artPieces = await getArtPieces();
