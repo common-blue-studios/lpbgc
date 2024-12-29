@@ -2,9 +2,9 @@
 
 import React, { useState } from "react";
 import { NavMobile } from "@/components/nav-mobile";
-import { Button } from "./button";
 import Image from "next/image";
 import Link from "next/link";
+import { Button } from "./ui/button";
 
 export default function Nav() {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
@@ -57,7 +57,6 @@ export default function Nav() {
         </ul>
       </nav>
 
-      {/* Mobile Navigation Toggle */}
       <Button
         variant="outline"
         className="md:hidden"
@@ -66,7 +65,6 @@ export default function Nav() {
         {showMobileMenu ? <Image src="/close.svg" alt="Close Menu" width={24} height={24} /> : <Image src="/bars.svg" alt="Open Menu" width={24} height={24} />}
       </Button>
 
-      {/* Mobile Navigation */}
       {showMobileMenu && <NavMobile show={showMobileMenu} setShow={setShowMobileMenu} />}
     </div>
   );
