@@ -3,9 +3,9 @@
 
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
-import { Button } from "@/components/button";
 import Link from "next/link";
 import { ArtPiece } from "@/lib/api/gallery";
+import { Button } from "@/components/ui/button";
 
 interface GalleryClientProps {
   initialArtPieces: ArtPiece[];
@@ -47,19 +47,19 @@ export function GalleryClient({ initialArtPieces }: GalleryClientProps) {
       />
       <div className="flex justify-center space-x-4 mb-8">
         <Button
-          variant={filter === "all" ? "primary" : "outline"}
+          variant={filter === "all" ? "default" : "outline"}
           onClick={() => setFilter("all")}
         >
           All
         </Button>
         <Button
-          variant={filter === "traditional" ? "primary" : "outline"}
+          variant={filter === "traditional" ? "default" : "outline"}
           onClick={() => setFilter("traditional")}
         >
           Traditional
         </Button>
         <Button
-          variant={filter === "digital" ? "primary" : "outline"}
+          variant={filter === "digital" ? "default" : "outline"}
           onClick={() => setFilter("digital")}
         >
           Digital
