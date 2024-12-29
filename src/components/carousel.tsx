@@ -1,0 +1,51 @@
+"use client";
+import Image from 'next/image'
+import { useRouter } from 'next/router'
+import type { ImageProps } from '../utils/types'
+import SharedModal from './shared-modal'
+
+export default function Carousel({
+  index,
+  currentPhoto,
+  slug,
+}: {
+  index: number
+  currentPhoto: ImageProps,
+  slug: string |string[],
+}) {
+  const router = useRouter()
+  function closeModal() {
+    // setLastViewedPhoto(currentPhoto)
+    router.push(`/${slug}`, undefined, { shallow: true })
+  }
+
+  function changePhotoId(newVal: number) {
+    return newVal
+  }
+
+ 
+  return (
+    <div className="fixed inset-0 flex items-center justify-center">
+      <button
+        className="absolute inset-0 z-30 cursor-default backdrop-blur-2xl"
+        onClick={closeModal}
+      >
+        
+      </button>
+      <Image
+          src={currentPhoto.blurDataUrl || ''}
+          className="pointer-events-none h-full w-full"
+          alt="blurred background"
+          fill
+          priority={true}
+        />
+      <SharedModal
+        index={index}
+        changePhotoId={changePhotoId}
+        currentPhoto={currentPhoto}
+        closeModal={closeModal}
+        navigation={false}
+      />
+    </div>
+  )
+}
