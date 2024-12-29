@@ -3,8 +3,8 @@ import { FiCalendar, FiUser } from "react-icons/fi";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import client from "@/lib/contentful";
+import Image from "next/image";
 
-// Define the type for a blog post
 interface BlogPost {
   title: string;
   content: any;
@@ -23,9 +23,13 @@ async function fetchBlogPosts(): Promise<BlogPost[]> {
   return entries.items.map((item: any) => ({
     ...item.fields,
     slug: item.fields.slug,
-    first_publication_date: format(new Date(item.sys.createdAt), "dd LLL yyyy", {
-      locale: ptBR,
-    }),
+    first_publication_date: format(
+      new Date(item.sys.createdAt),
+      "dd LLL yyyy",
+      {
+        locale: ptBR,
+      }
+    ),
     author: "Luana",
     banner: item.fields.banner?.fields?.file?.url || "",
   }));
@@ -35,8 +39,10 @@ export default async function Blogs() {
   const posts = await fetchBlogPosts();
 
   return (
-    <div className="container mx-auto max-w-2xl px-6 md:mt-20">
-      <h1 className="text-2xl font-bold mb-2">Posts</h1>
+    <div className="container mx-auto max-w-2xl px-6">
+      <div className="flex justify-center items-center flex-col ">
+        <Image src="/blog.png" alt="Blog" width={300} height={300} />
+      </div>
       <div className="posts">
         {posts.length ? (
           posts.map((post) => (

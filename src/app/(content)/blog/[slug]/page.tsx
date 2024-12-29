@@ -1,9 +1,10 @@
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import client from "@/lib/contentful";
-import { FiArrowLeft, FiCalendar, FiClock, FiUser } from "react-icons/fi";
-import Markdown from "react-markdown";
-import Link from "next/link";
+import {  FiCalendar, FiClock, FiUser } from "react-icons/fi";
+import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
+import { BLOCKS } from "@contentful/rich-text-types";
+import Image from "next/image";
 
 interface Post {
   first_publication_date: string | null;
@@ -12,9 +13,10 @@ interface Post {
     banner: string;
     author: string;
     reading_time: number;
-    content: string;
+    post: string;
   };
 }
+
 
 async function fetchPost(slug: string): Promise<Post | null> {
   const entries = await client.getEntries({
@@ -60,7 +62,7 @@ async function fetchPost(slug: string): Promise<Post | null> {
       banner: post.banner?.fields?.file?.url || "",
       author: post.author || "Luana",
       reading_time: calculateReadingTime(post.content || []),
-      content: post.content || "",
+      post: post.post || "",
     },
   };
 }
@@ -70,6 +72,7 @@ export default async function BlogPost({
 }: {
   params: { slug: string };
 }) {
+
   const post = await fetchPost(params.slug);
 
   if (!post) {
@@ -82,13 +85,6 @@ export default async function BlogPost({
 
   return (
     <section className="container mx-auto">
-      <Link
-        href="/blog"
-        className="flex items-center text-gray-800 dark:text-white gap-2 hover:underline"
-      >
-        <FiArrowLeft className="text-lg" />
-        <span>Go Back</span>
-      </Link>
       <div className="h-[60vh]">
         <img
           src={post.data.banner}
@@ -99,21 +95,32 @@ export default async function BlogPost({
       <article className="max-w-3xl mx-auto mt-12">
         <h1 className="text-4xl font-bold mb-6">{post.data.title}</h1>
         <div className="flex flex-col sm:flex-row gap-6 text-gray-600 mb-8">
-          <time className="flex items-center gap-2 text-sm">
+          <time className="place-items-center justify-items-center gap-2 text-sm">
             <FiCalendar className="text-lg" />
             {post.first_publication_date}
           </time>
-          <p className="flex items-center gap-2 text-sm">
+          <p className="place-items-center justify-items-center gap-2 text-sm">
             <FiUser className="text-lg" />
             {post.data.author}
           </p>
-          <p className="flex items-center gap-2 text-sm">
+          <p className="place-items-center justify-items-center gap-2 text-sm">
             <FiClock className="text-lg" />
             {post.data.reading_time} min
           </p>
         </div>
-        <div className="space-y-8">
-          <Markdown>{post.data.content}</Markdown>
+        <div className="space-y-8 py-8 pb-16">
+          {documentToReactComponents(post.data.post as any, {
+          renderNode: {
+            [BLOCKS.EMBEDDED_ASSET]: (node) => {
+              return (<Image
+                src={`https:${node.data.target.fields.file.url}`}
+                height={node.data.target.fields.file.details.image.height}
+                width={node.data.target.fields.file.details.image.width}
+                alt={node.data.target.fields.title}
+              />)
+            }
+          }
+        })}
         </div>
       </article>
     </section>

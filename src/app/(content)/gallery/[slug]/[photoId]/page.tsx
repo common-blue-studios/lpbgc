@@ -31,7 +31,6 @@ export default async function PhotoPage({ params }: PhotoPageProps) {
       <Carousel
         index={photo.id as any}
         currentPhoto={photo as any}
-        slug={slug}
       />
     </div>
   );

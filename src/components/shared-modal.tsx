@@ -3,8 +3,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { variants } from "../utils/animation-variants";
 import type { ImageProps, SharedModalProps } from "../utils/types";
-import { ArrowDown } from "lucide-react";
-import { HiArrowTurnLeftDown } from "react-icons/hi2";
+import { ArrowLeft, Download } from "lucide-react";
 
 export default function SharedModal({
   index,
@@ -16,16 +15,19 @@ export default function SharedModal({
 }: SharedModalProps) {
   const [loaded, setLoaded] = useState(false);
 
-  // Filter images for performance
   function handleDownload(photo: ImageProps)
   {
-    window.open(`https:${photo.url}`, '_blank');
+    window.open(`${photo.url}`, '_blank');
   }
 
-  let currentImage = images ? images[index] : currentPhoto;
+  const currentImage = images ? images[index] : currentPhoto;
 
   if(!currentImage){
     return <div>Imagem não encontrada</div>
+  }
+
+  const loader = ({ src }: { src: string }) => {
+    return src;
   }
 
   return (
@@ -52,12 +54,13 @@ export default function SharedModal({
                 className="absolute"
               >
                 <Image
-                  src={`https:${currentImage.url}`}
+                  src={`${currentImage.url}`}
                   width={navigation ? 1280 : 1920}
                   height={(navigation ? 1280 : 1920) * (2 / 3)} // Aspect ratio 3:2
                   priority
                   alt="Main photo"
                   onLoad={() => setLoaded(true)}
+                  loader={loader}
                 />
               </motion.div>
             </AnimatePresence>
@@ -76,7 +79,7 @@ export default function SharedModal({
                   className="rounded-full bg-black/50 p-2 text-white/75 backdrop-blur-lg transition hover:bg-black/75 hover:text-white"
                   title="Download fullsize version"
                 >
-                  <ArrowDown className="h-5 w-5" />
+                  <Download className="h-5 w-5" />
                 </button>
               </div>
               <div className="absolute top-0 left-0 flex items-center gap-2 p-3 text-white">
@@ -84,7 +87,7 @@ export default function SharedModal({
                   onClick={() => closeModal()}
                   className="rounded-full bg-black/50 p-2 text-white/75 backdrop-blur-lg transition hover:bg-black/75 hover:text-white"
                 >
-                    <HiArrowTurnLeftDown className="h-5 w-5" />
+                    <ArrowLeft className="h-5 w-5" />
                 </button>
               </div>
             </div>

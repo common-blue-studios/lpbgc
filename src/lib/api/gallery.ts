@@ -1,14 +1,13 @@
 import client from "../contentful";
-import { getBlurData } from "@/utils/blur-data-generator";
 
 export interface ArtPiece {
   id: string;
   title: string;
-  type: "traditional" | "digital"; 
+  type: "traditional" | "digital";
   assets: {
     id: string;
     url: string;
-    blurDataUrl: string;
+    blurDataUrl?: string;
   }[];
 }
 
@@ -18,30 +17,21 @@ export async function getArtPieces(): Promise<ArtPiece[]> {
       content_type: contentType,
       limit: 1,
     });
-    return await Promise.all(
-      entries.items.map(async (item: any) => {
-        const assets = await Promise.all(
-          item.fields.assets.map(async (asset: any) => {
-            const url = `https:${asset.fields.file.url}`;
-            const { base64 } = await getBlurData(url);
+    return entries.items.map((item: any) => {
 
-            return {
-              id: asset.sys.id,
-              title: asset.title,
-              url,
-              blurDataUrl: base64,
-            };
-          })
-        );
+      const assets = item.fields.assets.map((asset: any) => ({
+        id: asset.sys.id,
+        url: `https:${asset.fields.file.url}`,
+        blurDataUrl: `https:${asset.fields.file.url}`
+      }));
 
-        return {
-          id: item.sys.id,
-          title: item.fields.title,
-          type,
-          assets,
-        };
-      })
-    );
+      return {
+        id: item.sys.id,
+        title: item.fields.title || "Untitled",
+        type,
+        assets,
+      };
+    });
   };
 
   const traditionalArtPieces = await fetchArtPieces("traditionalArt", "traditional");

@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { NavMobile } from "@/components/nav-mobile";
 import { Button } from "./button";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Nav() {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
@@ -14,44 +15,44 @@ export default function Nav() {
       <nav className="hidden md:flex flex-1/12 flex-col h-full justify-center items-center w-[120px]">
         <ul className="flex flex-col gap-6 p-6 font-geist-sans text-lg text-gray-800 w-full">
           <li>
-            <a
+            <Link
               href="/"
               className="text-gray-700 hover:underline hover:underline-offset-4 hover:font-bold"
             >
               Home
-            </a>
+            </Link>
           </li>
           <li>
-            <a
+            <Link
               href="/gallery"
               className="text-gray-700 hover:underline hover:underline-offset-4 hover:font-bold"
             >
               Gallery
-            </a>
+            </Link>
           </li>
           <li>
-            <a
+            <Link
               href="/about"
               className="text-gray-700 hover:underline hover:underline-offset-4 hover:font-bold"
             >
               About
-            </a>
+            </Link>
           </li>
           <li>
-            <a
+            <Link
               href="/contact"
               className="text-gray-700 hover:underline hover:underline-offset-4 hover:font-bold"
             >
               Contact
-            </a>
+            </Link>
           </li>
           <li>
-            <a
+            <Link
               href="/blog"
               className="text-gray-700 hover:underline hover:underline-offset-4 hover:font-bold"
             >
               Blog
-            </a>
+            </Link>
           </li>
         </ul>
       </nav>
@@ -59,6 +60,7 @@ export default function Nav() {
       {/* Mobile Navigation Toggle */}
       <Button
         variant="outline"
+        className="md:hidden"
         onClick={() => setShowMobileMenu(!showMobileMenu)}
       >
         {showMobileMenu ? <Image src="/close.svg" alt="Close Menu" width={24} height={24} /> : <Image src="/bars.svg" alt="Open Menu" width={24} height={24} />}

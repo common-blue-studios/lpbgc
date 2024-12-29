@@ -1,8 +1,8 @@
 "use client";
 
 import React from "react";
-import Link from "next/link";
 import { Button } from "./button";
+import Link from "next/link";
 
 interface navMobileProps {
   setShow: (show: boolean) => void;
@@ -14,28 +14,28 @@ export function NavMobile({ setShow, show }: navMobileProps) {
       <nav className="grid gap-6 text-lg font-geist-sans text-gray-800">
         <ul className="flex flex-col gap-6 p-6 font-geist-sans text-lg text-gray-800 w-full">
           <li>
-            <a
+            <Link
               href="/"
               className="text-gray-700 hover:underline hover:underline-offset-4 hover:font-bold"
             >
               Home
-            </a>
+            </Link>
           </li>
           <li>
-            <a
+            <Link
               href="/gallery"
               className="text-gray-700 hover:underline hover:underline-offset-4 hover:font-bold"
             >
               Gallery
-            </a>
+            </Link>
           </li>
           <li>
-            <a
+            <Link
               href="/about"
               className="text-gray-700 hover:underline hover:underline-offset-4 hover:font-bold"
             >
               About
-            </a>
+            </Link>
           </li>
           <li>
             <a
@@ -46,12 +46,12 @@ export function NavMobile({ setShow, show }: navMobileProps) {
             </a>
           </li>
           <li>
-            <a
+            <Link
               href="/blog"
               className="text-gray-700 hover:underline hover:underline-offset-4 hover:font-bold"
             >
               Blog
-            </a>
+            </Link>
           </li>
           <li>
             <Button onClick={() => setShow(!show)} variant="secondary">

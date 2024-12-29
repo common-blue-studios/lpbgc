@@ -37,8 +37,14 @@ export function GalleryClient({ initialArtPieces }: GalleryClientProps) {
     
 
   return (
-    <div>
+    <div className="flex justify-center items-center flex-col ">
       {/* Filter Buttons */}
+      <Image 
+        src="/gallery.png" 
+        alt="About" 
+        width={300} 
+        height={300} 
+      />
       <div className="flex justify-center space-x-4 mb-8">
         <Button
           variant={filter === "all" ? "primary" : "outline"}
