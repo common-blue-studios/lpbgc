@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { SEO } from "@/config/seo";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -13,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Luana Góes",
-  description: "Luana Góes Portfolio",
+  title: SEO.title,
+  description: SEO.description,
 };
 
 export default function RootLayout({

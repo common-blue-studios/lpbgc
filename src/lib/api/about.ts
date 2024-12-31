@@ -1,3 +1,4 @@
+import { CONTENTFUL } from "@/config/contentful";
 import client from "../contentful";
 
 export interface AboutContent {
@@ -8,7 +9,7 @@ export interface AboutContent {
 
 export async function getAboutContent(): Promise<AboutContent | null> {
     const entries = await client.getEntries({
-      content_type: "personalPortfolioAboutPage", 
+      content_type: CONTENTFUL.aboutApiKey, 
       limit: 1,
     }) as any;
 

@@ -1,6 +1,10 @@
+import { PRESENTATION } from "@/config/presentation";
 import Image from "next/image";
 
 export default function Footer() {
+
+  const { instagram, bluesky, behance } = PRESENTATION.footer;
+  
   return (
     <footer className="
       fixed bottom-0 w-full p-4 bg-white  text-white border-t border-gray-700
@@ -10,7 +14,7 @@ export default function Footer() {
           className="
           flex items-center gap-2 hover:underline hover:underline-offset-4
           "
-          href="https://www.instagram.com/luana.g.m/"
+          href={instagram}
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -26,7 +30,7 @@ export default function Footer() {
           className="
           flex items-center gap-2 hover:underline hover:underline-offset-4
           "
-          href="https://bsky.app/profile/luanagm.bsky.social"
+          href={bluesky}
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -42,7 +46,7 @@ export default function Footer() {
           className="
           flex items-center gap-2 hover:underline hover:underline-offset-4
           "
-          href="https://www.behance.net/luana_goes"
+          href={behance}
           target="_blank"
           rel="noopener noreferrer"
         >

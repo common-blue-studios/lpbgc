@@ -1,4 +1,3 @@
-// gallery-client.tsx
 "use client";
 
 import { useState, useRef, useEffect } from "react";
@@ -6,24 +5,21 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArtPiece } from "@/lib/api/gallery";
 import { Button } from "@/components/ui/button";
+import { CONTENTFUL } from "@/config/contentful";
 
 interface GalleryClientProps {
   initialArtPieces: ArtPiece[];
 }
 
 export function GalleryClient({ initialArtPieces }: GalleryClientProps) {
-  const [filter, setFilter] = useState<"all" | "traditional" | "digital">("all");
+  const [filter, setFilter] = useState<string>("all");
+  const [lastViewedPhoto, setLastViewedPhoto] = useState<string | null>(null);
+  const lastViewedPhotoRef = useRef<HTMLAnchorElement>(null);
 
-  // Filter art pieces based on selected type
   const filteredArtPieces = initialArtPieces.filter(
     (piece) => filter === "all" || piece.type === filter
   );
 
-  // Handle last viewed photo for modal-like functionality
-  const [lastViewedPhoto, setLastViewedPhoto] = useState<string | null>(null);
-  const lastViewedPhotoRef = useRef<HTMLAnchorElement>(null);
-
-  // Ensure last viewed photo scrolls into view when closing modal
   useEffect(() => {
     if (lastViewedPhoto) {
       lastViewedPhotoRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -31,20 +27,12 @@ export function GalleryClient({ initialArtPieces }: GalleryClientProps) {
     }
   }, [lastViewedPhoto]);
 
-  function loader({ src } : { src: string }) {
-    return src;
-  }
-    
+  const loader = ({ src }: { src: string }) => src;
 
   return (
-    <div className="flex justify-center items-center flex-col ">
-      {/* Filter Buttons */}
-      <Image 
-        src="/gallery.png" 
-        alt="About" 
-        width={300} 
-        height={300} 
-      />
+    <div className="flex flex-col items-center">
+      <Image src="/gallery.png" alt="Gallery" width={300} height={300} />
+
       <div className="flex justify-center space-x-4 mb-8">
         <Button
           variant={filter === "all" ? "default" : "outline"}
@@ -52,31 +40,27 @@ export function GalleryClient({ initialArtPieces }: GalleryClientProps) {
         >
           All
         </Button>
-        <Button
-          variant={filter === "traditional" ? "default" : "outline"}
-          onClick={() => setFilter("traditional")}
-        >
-          Traditional
-        </Button>
-        <Button
-          variant={filter === "digital" ? "default" : "outline"}
-          onClick={() => setFilter("digital")}
-        >
-          Digital
-        </Button>
+        {CONTENTFUL.galleryApiKeys.map(({ key, label }) => (
+          <Button
+            key={key}
+            variant={filter === key ? "default" : "outline"}
+            onClick={() => setFilter(key)}
+          >
+            {label}
+          </Button>
+        ))}
       </div>
 
-      {/* Art Pieces Grid */}
       <div className="columns-1 gap-4 sm:columns-2 xl:columns-3 2xl:columns-4">
         {filteredArtPieces.map((piece) =>
-          piece.assets.map((asset) =>
+          piece.assets.map((asset) => (
             <Link
               key={asset.id}
               href={`/gallery/${piece.type}/${asset.id}`}
               shallow
               className="relative mb-5 block w-full cursor-zoom-in group after:content-none after:absolute after:inset-0 after:rounded-lg after:shadow-highlight"
               ref={asset.id === lastViewedPhoto ? lastViewedPhotoRef : null}
-              onClick={() => setLastViewedPhoto(piece.id)}
+              onClick={() => setLastViewedPhoto(asset.id)}
             >
               <Image
                 alt={`${piece.title} - ${piece.type} art`}
@@ -91,7 +75,7 @@ export function GalleryClient({ initialArtPieces }: GalleryClientProps) {
                 loader={loader}
               />
             </Link>
-          )
+          ))
         )}
       </div>
     </div>

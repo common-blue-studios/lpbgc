@@ -5,6 +5,7 @@ import { NavMobile } from "@/components/nav-mobile";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "./ui/button";
+import { NAVIGATION } from "@/config/presentation";
 
 export default function Nav() {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
@@ -14,46 +15,18 @@ export default function Nav() {
       {/* Desktop Navigation */}
       <nav className="hidden md:flex flex-1/12 flex-col h-full justify-center items-center w-[120px]">
         <ul className="flex flex-col gap-6 p-6 font-geist-sans text-lg text-gray-800 w-full">
-          <li>
-            <Link
-              href="/"
-              className="text-gray-700 hover:underline hover:underline-offset-4 hover:font-bold"
-            >
-              Home
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/gallery"
-              className="text-gray-700 hover:underline hover:underline-offset-4 hover:font-bold"
-            >
-              Gallery
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/about"
-              className="text-gray-700 hover:underline hover:underline-offset-4 hover:font-bold"
-            >
-              About
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/contact"
-              className="text-gray-700 hover:underline hover:underline-offset-4 hover:font-bold"
-            >
-              Contact
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/blog"
-              className="text-gray-700 hover:underline hover:underline-offset-4 hover:font-bold"
-            >
-              Blog
-            </Link>
-          </li>
+          {
+            NAVIGATION.pages.map((page, index) => (
+              <li key={index}>
+                <Link
+                  href={page.url}
+                  className="text-gray-700 hover:underline hover:underline-offset-4 hover:font-bold"
+                >
+                  {page.name}
+                </Link>
+              </li>
+            ))
+          }
         </ul>
       </nav>
 
