@@ -14,7 +14,8 @@ export async function generateMetadata(
   { params }: Props,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
-  const post = await fetchPost(params.slug);
+  const {slug} = await params;
+  const post = await fetchPost(slug);
 
   if (!post) {
     return {
@@ -31,7 +32,7 @@ export async function generateMetadata(
     openGraph: {
       title: post.data.title,
       description: post.data.subtitle ?? post.data.title,
-      url: `${SEO.url}/blog/${params.slug}`,
+      url: `${SEO.url}/blog/${slug}`,
       images: [post.data.banner, ...previousImages],
     },
     twitter: {
@@ -44,7 +45,8 @@ export async function generateMetadata(
 }
 
 export default async function BlogPost({ params }: Props) {
-  const post = await fetchPost(params.slug);
+  const {slug} = await params;
+  const post = await fetchPost(slug);
 
   if (!post) {
     return (
