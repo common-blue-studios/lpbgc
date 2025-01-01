@@ -11,6 +11,7 @@ export interface Post {
     banner: string;
     author: string;
     reading_time: number;
+    subtitle?: string;
     post: string;
   };
 }
@@ -84,6 +85,7 @@ export async function fetchPost(slug: string): Promise<Post | null> {
     ),
     data: {
       title: post.title,
+      subtitle: post.subtitle || post.title,
       banner: post.banner?.fields?.file?.url || "",
       author: post.author || "",
       reading_time: calculateReadingTime(post.content || []),

@@ -1,14 +1,50 @@
-import {  FiCalendar, FiClock, FiUser } from "react-icons/fi";
+import { FiCalendar, FiClock, FiUser } from "react-icons/fi";
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 import { BLOCKS } from "@contentful/rich-text-types";
 import Image from "next/image";
+import { Metadata, ResolvingMetadata } from "next";
 import { fetchPost } from "@/lib/api/blog";
+import { SEO } from "@/config/seo";
 
+type Props = {
+  params: { slug: string };
+};
 
-export default async function BlogPost(params: any) {
-  const data  = await params;
+export async function generateMetadata(
+  { params }: Props,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const post = await fetchPost(params.slug);
 
-  const post = await fetchPost(data.slug);
+  if (!post) {
+    return {
+      title: "Post Not Found",
+      description: "The requested blog post could not be found.",
+    };
+  }
+
+  const previousImages = (await parent)?.openGraph?.images || [];
+
+  return {
+    title: post.data.title,
+    description: post.data.subtitle ?? post.data.title,
+    openGraph: {
+      title: post.data.title,
+      description: post.data.subtitle ?? post.data.title,
+      url: `${SEO.url}/blog/${params.slug}`,
+      images: [post.data.banner, ...previousImages],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.data.title,
+      description: post.data.subtitle ?? post.data.title,
+      images: [post.data.banner],
+    },
+  };
+}
+
+export default async function BlogPost({ params }: Props) {
+  const post = await fetchPost(params.slug);
 
   if (!post) {
     return (
@@ -20,6 +56,7 @@ export default async function BlogPost(params: any) {
 
   return (
     <section className="container mx-auto">
+      {/* Banner Image */}
       <div className="h-[60vh]">
         <img
           src={post.data.banner}
@@ -27,35 +64,39 @@ export default async function BlogPost(params: any) {
           className="w-full h-full object-cover"
         />
       </div>
+
+      {/* Blog Content */}
       <article className="max-w-3xl mx-auto mt-12">
         <h1 className="text-4xl font-bold mb-6">{post.data.title}</h1>
         <div className="flex flex-col sm:flex-row gap-6 text-gray-600 mb-8">
-          <time className="place-items-center justify-items-center gap-2 text-sm">
+          <time className="place-items-center justify-items-center gap-2 text-sm flex items-center">
             <FiCalendar className="text-lg" />
             {post.first_publication_date}
           </time>
-          <p className="place-items-center justify-items-center gap-2 text-sm">
+          <p className="place-items-center justify-items-center gap-2 text-sm flex items-center">
             <FiUser className="text-lg" />
             {post.data.author}
           </p>
-          <p className="place-items-center justify-items-center gap-2 text-sm">
+          <p className="place-items-center justify-items-center gap-2 text-sm flex items-center">
             <FiClock className="text-lg" />
             {post.data.reading_time} min
           </p>
         </div>
+
+        {/* Render Rich Text Content */}
         <div className="space-y-8 py-8 pb-16">
           {documentToReactComponents(post.data.post as any, {
-          renderNode: {
-            [BLOCKS.EMBEDDED_ASSET]: (node) => {
-              return (<Image
-                src={`https:${node.data.target.fields.file.url}`}
-                height={node.data.target.fields.file.details.image.height}
-                width={node.data.target.fields.file.details.image.width}
-                alt={node.data.target.fields.title}
-              />)
-            }
-          }
-        })}
+            renderNode: {
+              [BLOCKS.EMBEDDED_ASSET]: (node) => (
+                <Image
+                  src={`https:${node.data.target.fields.file.url}`}
+                  height={node.data.target.fields.file.details.image.height}
+                  width={node.data.target.fields.file.details.image.width}
+                  alt={node.data.target.fields.title}
+                />
+              ),
+            },
+          })}
         </div>
       </article>
     </section>
