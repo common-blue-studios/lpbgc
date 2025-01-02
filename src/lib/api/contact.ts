@@ -6,16 +6,11 @@ export interface ContactContent {
   content: string;
 }
 
-export async function getContactContent(): Promise<ContactContent | null> {
+export async function getContactContent() {
     const entries = await client.getEntries({
       content_type: CONTENTFUL.contactApiKey,
       limit: 1,
     }) as any;
-
-    if (!entries.items.length) {
-      console.error("No entries found for the 'contact' content type.");
-      return null;
-    }
 
     const item = entries.items[0];
     const title = item.fields.title || "Untitled";
