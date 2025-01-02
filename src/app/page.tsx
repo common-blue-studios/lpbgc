@@ -36,7 +36,7 @@ export default function Home() {
             </p>
           </main>
 
-          <Footer />
+          <Footer showUnderline={false}/>
         </div>
       </div>
     </div>

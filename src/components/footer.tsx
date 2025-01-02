@@ -1,14 +1,15 @@
 import { PRESENTATION } from "@/config/presentation";
 import Image from "next/image";
 
-export default function Footer() {
+export default function Footer({showUnderline = true}: {showUnderline?: boolean}) {
 
   const { instagram, bluesky, behance } = PRESENTATION.footer;
   
   return (
-    <footer className="
-      fixed bottom-0 w-full p-4 bg-white  text-white border-t border-gray-700
-    ">
+    <footer className={`
+      fixed bottom-0 w-full p-4 bg-white  text-white  border-gray-700
+      ${showUnderline ? 'border-t' : ''}
+    `}>
       <div className="flex gap-6 flex-wrap items-center justify-center md:ml-[120px]">
         <a
           className="
