@@ -2,13 +2,12 @@ import { FiCalendar, FiClock, FiUser } from "react-icons/fi";
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 import { BLOCKS } from "@contentful/rich-text-types";
 import Image from "next/image";
-import { Metadata, ResolvingMetadata } from "next";
+import { Metadata } from "next";
 import { fetchPost } from "@/lib/api/blog";
 import { SEO } from "@/config/seo";
 
 export async function generateMetadata(
   { params }: any,
-  parent: ResolvingMetadata
 ): Promise<Metadata> {
   const {slug} = await params;
 
@@ -28,8 +27,6 @@ export async function generateMetadata(
     };
   }
 
-  const previousImages = (await parent)?.openGraph?.images || [];
-
   return {
     title: post.data.title,
     description: post.data.subtitle ?? post.data.title,
@@ -37,13 +34,13 @@ export async function generateMetadata(
       title: post.data.title,
       description: post.data.subtitle ?? post.data.title,
       url: `${SEO.url}/blog/${slug}`,
-      images: [post.data.banner, ...previousImages],
+      images: [post.data.banner.startsWith("https") ? post.data.banner : `https:${post.data.banner}`],
     },
     twitter: {
       card: "summary_large_image",
       title: post.data.title,
       description: post.data.subtitle ?? post.data.title,
-      images: [post.data.banner],
+      images: [post.data.banner.startsWith("https") ? post.data.banner : `https:${post.data.banner}`],
     },
   };
 }
