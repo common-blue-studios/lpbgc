@@ -6,15 +6,19 @@ import { Metadata, ResolvingMetadata } from "next";
 import { fetchPost } from "@/lib/api/blog";
 import { SEO } from "@/config/seo";
 
-type Props = {
-  params: { slug: string };
-};
-
 export async function generateMetadata(
-  { params }: Props,
+  { params }: any,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   const {slug} = await params;
+
+  if (!slug) {
+    return {
+      title: "Post Not Found",
+      description: "The requested blog post could not be found.",
+    };
+  }
+
   const post = await fetchPost(slug);
 
   if (!post) {
@@ -44,7 +48,7 @@ export async function generateMetadata(
   };
 }
 
-export default async function BlogPost({ params }: Props) {
+export default async function BlogPost({ params }: any) {
   const {slug} = await params;
   const post = await fetchPost(slug);
 
