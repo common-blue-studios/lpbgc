@@ -3,7 +3,7 @@ export const CONTENTFUL = {
   aboutApiKey: "personalPortfolioAboutPage",
   projectsApiKey: "projects",
   blogApiKey: "blogPost",
-  contactApiKey: "personalPortfolioAboutPage",
+  contactApiKey: "personalPortfolioContactPage",
   spaceId: `${process.env.CONTENTFUL_SPACE_ID}`,
   accessToken: `${process.env.CONTENTFUL_ACCESS_TOKEN}`,
   galleryApiKeys: [
